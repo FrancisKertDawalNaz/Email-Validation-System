@@ -72,6 +72,9 @@
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         button:hover {
@@ -83,11 +86,47 @@
             transform: translateY(0);
         }
         
+        button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            display: none;
+        }
+        
+        .spinner.show {
+            display: inline-block;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
         .results {
             background: #f8f9fa;
             border-radius: 8px;
             padding: 25px;
             border-left: 5px solid #667eea;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         h3 {
@@ -143,9 +182,12 @@
         <h2>📧 Email Validation System</h2>
         <p class="subtitle">Check if your email is valid and deliverable</p>
 
-        <form method="POST">
+        <form method="POST" id="emailForm">
             <input type="email" name="email" placeholder="Enter your email" required>
-            <button type="submit">Check</button>
+            <button type="submit" id="checkBtn">
+                <span class="spinner" id="spinner"></span>
+                <span id="btnText">Check</span>
+            </button>
         </form>
 
         {% if result %}
@@ -174,6 +216,19 @@
             </div>
         {% endif %}
     </div>
+
+    <script>
+        const form = document.getElementById('emailForm');
+        const checkBtn = document.getElementById('checkBtn');
+        const spinner = document.getElementById('spinner');
+        const btnText = document.getElementById('btnText');
+
+        form.addEventListener('submit', function() {
+            spinner.classList.add('show');
+            checkBtn.disabled = true;
+            btnText.textContent = 'Checking...';
+        });
+    </script>
 
 </body>
 </html>
