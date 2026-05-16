@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mailboxlayer Email Validator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        h2 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+            text-align: center;
+        }
+        
+        .subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        input[type="email"] {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="email"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .results {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 25px;
+            border-left: 5px solid #667eea;
+        }
+        
+        h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        
+        .result-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .result-item p {
+            margin: 0;
+            color: #555;
+            font-size: 15px;
+        }
+        
+        .result-label {
+            font-weight: 600;
+            color: #333;
+            width: 140px;
+        }
+        
+        .result-value {
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .check-icon {
+            color: #4caf50;
+            margin-right: 8px;
+        }
+        
+        .valid {
+            color: #4caf50;
+        }
+        
+        .invalid {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>📧 Email Validation System</h2>
+        <p class="subtitle">Check if your email is valid and deliverable</p>
+
+        <form method="POST">
+            <input type="email" name="email" placeholder="Enter your email" required>
+            <button type="submit">Check</button>
+        </form>
+
+        {% if result %}
+            <div class="results">
+                <h3>Validation Results</h3>
+                
+                <div class="result-item">
+                    <p><span class="check-icon">✉️</span><span class="result-label">Email:</span> <span class="result-value">{{ result.email }}</span></p>
+                </div>
+                
+                <div class="result-item">
+                    <p><span class="check-icon">✔</span><span class="result-label">Format Valid:</span> <span class="result-value {% if result.format_valid %}valid{% else %}invalid{% endif %}">{{ result.format_valid }}</span></p>
+                </div>
+                
+                <div class="result-item">
+                    <p><span class="check-icon">✔</span><span class="result-label">SMTP Check:</span> <span class="result-value {% if result.smtp_check %}valid{% else %}invalid{% endif %}">{{ result.smtp_check }}</span></p>
+                </div>
+                
+                <div class="result-item">
+                    <p><span class="check-icon">✔</span><span class="result-label">Disposable:</span> <span class="result-value {% if not result.disposable %}valid{% else %}invalid{% endif %}">{{ result.disposable }}</span></p>
+                </div>
+                
+                <div class="result-item">
+                    <p><span class="check-icon">⭐</span><span class="result-label">Score:</span> <span class="result-value">{{ result.score }}/100</span></p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>
